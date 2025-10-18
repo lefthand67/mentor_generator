@@ -1,0 +1,7 @@
+0.24.2
+- changelog moved to a dedicated file, finally
+
+0.24.1
+- emergency_brake moved to list_of_rules
+- concepts_mastered got the predefined structure
+- resources_suggested got the predefined structure
