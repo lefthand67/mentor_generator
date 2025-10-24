@@ -12,12 +12,12 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.24.2",
+    "version": "0.24.3",
     "created": "2025-10-11",
     "last_updated": "2025-10-15",
     "author": "vrudakov",
     "tags": ["meta_prompt", "state_aware", "pedagogical"],
-    "license": "MIT"
+    "license": "GPLv3"
   },
 
   "meta_prompt_logic": {
