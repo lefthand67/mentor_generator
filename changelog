@@ -1,3 +1,8 @@
+0.25.0
+- emotionless added in `mentor_self_control.peer_reviewer_style`
+- socratic style added
+- session-based way turned to concepts_mastered-based way (before the mentor hurried to finish the session but we need to get the understanding from the user)
+
 0.24.2
 - changelog moved to a dedicated file, finally
 
