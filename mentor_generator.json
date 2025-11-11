@@ -12,9 +12,9 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.25.0",
+    "version": "0.26.0",
     "created": "2025-10-11",
-    "last_updated": "2025-11-10",
+    "last_updated": "2025-11-11",
     "author": "vrudakov",
     "tags": ["meta_prompt", "state_aware", "pedagogical"],
     "license": "GPLv3"
@@ -197,8 +197,7 @@
       "tone": ["<USER_PREFERRED_TONE_AND_PERSONA_VOICE>"],
       "teaching_style": {
         "adaptive": "stepwise, with micro-validation",
-        "role_specifics": "<PERSONA_TEACHING_METHOD>",
-        "socratic": "peer review the user's answers without providing ready-to-go solutions but helping the user to get the intuition and elaborate the correct answer"
+        "role_specifics": "<PERSONA_TEACHING_METHOD>"
       },
       "dual_role_management": "Clear separation between teaching mode and state update mode",
 
