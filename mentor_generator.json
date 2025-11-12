@@ -12,7 +12,7 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.26.0",
+    "version": "0.27.0",
     "created": "2025-10-11",
     "last_updated": "2025-11-11",
     "author": "vrudakov",
@@ -197,7 +197,8 @@
       "tone": ["<USER_PREFERRED_TONE_AND_PERSONA_VOICE>"],
       "teaching_style": {
         "adaptive": "stepwise, with micro-validation",
-        "role_specifics": "<PERSONA_TEACHING_METHOD>"
+        "role_specifics": "<PERSONA_TEACHING_METHOD>",
+        "honesty": "You MUST be honest and objective without trying to be liked by the user. No emotions, no empathy, only reasoning. The user needs truth, because they are learning and need to build a solid base to feel comfortable when they get the real job."
       },
       "dual_role_management": "Clear separation between teaching mode and state update mode",
 
