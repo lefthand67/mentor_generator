@@ -1,3 +1,13 @@
+v0.28.0 – 2025-11-16
+
+- Bumped version; renamed metadata fields (`created` → `birth`, `last_updated` → `modified`).  
+- Improved naming: human-readable `name`, lowercase placeholders, clearer step labels (e.g., `` `collection` complete ``).  
+- Restructured state management: moved session protocols under `session_resumption_protocol`, added `user_profile` root section.  
+- Consolidated `interaction_flow`, `response_architecture`, and `emergency_brake_rules` into a unified flow.  
+- Replaced flat `additional_context` with phased changelog (`phase_in_progress`, `finished_phases_logs`) and explicit retention rules.  
+- Added `zero_level_protocol` rule; fixed `external_resources_log` path.  
+- Minor cleanup: removed bolding, fixed grammar, standardized key references, trimmed redundancy.
+
 0.27.0
 - teaching_style demands honesty from the mentor
 
