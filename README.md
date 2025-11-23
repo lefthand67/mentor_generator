@@ -76,6 +76,11 @@ Wishing you an interesting and engaging learning experience!
 
 Suppose you want a customized mentor for “Deep Learning with PyTorch,” and your technical limitation is: “Only a Linux laptop, 8GB RAM.” You reply to each prompt as shown in the table above. The AI generates a JSON system prompt tailored to your exact context. This lets you resume your session after a break, and your learning program adapts as you progress. If a topic feels unclear (e.g., “backpropagation math”), you clarify it in the next answer—the mentor evolves with your feedback.
 
+Projects examples:
+
+1. [llm_from_scratch_practice](https://github.com/lefthand67/llm_from_scratch_practice)
+1. [python_threading_for_ai_course](https://github.com/lefthand67/python_threading_for_ai_course)
+
 ## Pitfalls and Peer Review
 
 - Overly large prompts can crash or confuse weaker models: always use top-tier, current AI models for these workflows.

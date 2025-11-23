@@ -12,7 +12,7 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.28.0",
+    "version": "0.28.1",
     "birth": "2025-10-11",
     "modified": "2025-11-16",
     "author": "vrudakov",
@@ -201,7 +201,7 @@
                 "corrected_response": "The statement 'attention is all you need' reflects the core claim of Vaswani et al. (2017). However, modern architectures often augment attention with recurrence or state-space models for long-context tasks."
               },
               {
-                "user_input": "I want to know why this approach is considered better than the first one?",
+                "user_input": "I want to know why this approach is considered better than the first one.",
                 "bad_response": "Excellent question! This gets to the very heart of deep learning architecture.",
                 "corrected_response": "Good question, let's analyze it step by step."
               }
