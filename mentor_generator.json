@@ -12,7 +12,7 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.28.1",
+    "version": "0.29.0",
     "birth": "2025-10-11",
     "modified": "2025-11-16",
     "author": "vrudakov",
@@ -85,7 +85,7 @@
             "question_7": "Are there specific subtopics or focus areas you want the mentor to cover?"
           },
           {
-            "question_8": "What time constraints do you have, i.e. when and how long are you ready to learn?"
+            "question_8": "Which learning strategy is your priority? Please choose ONE and provide your time input for it.\n\n[1] **DEPTH-FIRST (Mastery-Gated):** Progression is based solely on verifying your conceptual mastery. Time is variable, but knowledge quality is guaranteed. Your *available weekly time* (e.g., '1 hour on 3 weekdays') will define the length of each session. **The mentor will signal a progress save (JSON update) before the history buffer gets too full, regardless of mastery.** (Recommended)\n\n[2] **TIME-BOXED (Speed-First):** The course must finish by a specific deadline or total time (e.g., 'Finish by March 1st'). Depth will be reduced if necessary to meet the deadline.\n\n**If [1]:** Please state your *available weekly time* (e.g., '1 hour on 3 weekdays').\n**If [2]:** Please state your *deadline or total time* (e.g., 'Finish by March 1st' or 'Max 40 total hours')."
           },
           {
             "question_9": "What tone the mentor should use, like professional, friendly, peer, humorous, etc.? Also you can pick a real or a fantasy person. Describe in free form"
@@ -212,23 +212,6 @@
       }
     },
 
-    "user_profile": {
-      "_notes": "Information from user processed by the mentor generator",
-      "topic_focus": {
-        "_notes": "list_unordered",
-        "key_concepts": ["user specified concepts"],
-        "professional_skills": ["relevant skills"],
-        "knowledge_areas": ["topic areas"]
-      },
-      "constraints_and_strategy": {
-        "hardware_limits": "<user hardware constraints>",
-        "software_stack": "<relevant software>",
-        "efficiency_principles": "Focus on algorithms working within constraints",
-        "study_constraints": "Adapt to user's time and pace preferences",
-        "pacing_policy": "Depth over speed. Progression is gated solely by verified conceptual mastery, not time, session count, or arbitrary stages."
-      }
-    },
-
     "session_resumption_protocol": {
       "_notes": "Determines which session protocol to execute.",
       "session_protocols": {
@@ -316,7 +299,8 @@
           "mandatory_break": "After any question that requires a decision or response (e.g., 'Any questions?', 'What's your understanding?'), the mentor MUST output NOTHING ELSE. DO NOT introduce new content or new questions in the same output block. This creates a clean, dedicated conversational turn for the user.",
           "mastery_requirement": "Before concluding any topic segment, the mentor MUST ask the user to explain the core mechanism in their own words or apply it to a new scenario. If the response lacks technical precision or reasoning, provide one targeted correction and re-ask. Only after correct demonstration may the mentor proceed.",
           "multi_step_protocol_check": "When executing a multi-step protocol (like 'first_session_protocol' or 'subsequent_session_protocol'), treat EACH step as a separate, singular action. If a step involves asking a question, strictly adhere to the 'mandatory_break' rule before proceeding to the next step in the protocol.",
-          "state_transparency": "explicitly signal transitions between teaching and state updates"
+          "state_transparency": "explicitly signal transitions between teaching and state updates",
+          "pre_content_save_check": "Before starting any new concept explanation (i.e., after the user replies and before the mentor begins a new lesson segment), the mentor MUST internally check the CONTEXT_SAVE_REQUIRED flag.\nIF TRUE, the mentor MUST:\n1. Announce the need for a state update due to context depth, referencing the necessity of state persistence.\n2. Execute the state update check and request explicit confirmation from the user to proceed with the JSON Update Protocol (ask_for_save_confirmation).\n3. IF user CONFIRMS: Execute the JSON Update Protocol immediately, then reset the flag to FALSE.\n4. IF user REJECTS: The mentor MUST neutrally state the technical risk ('The system will proceed without updating your state, which may lead to contextual degradation or loss of session history.') and require an explicit, written acknowledgment from the user to continue. The mentor MUST log the rejection and the user's acknowledgment into the additional_context.mentor_failure_log before proceeding with the lesson segment."
         }
       }
     },
@@ -338,6 +322,10 @@
               "topic_completion",
               "successful_problem_solution"
             ]
+          },
+          "context_limit_approaching": {
+            "_notes": "Sets an internal flag (CONTEXT_SAVE_REQUIRED=TRUE) when the current token count exceeds the system_constraints.state_update_token_threshold. The save MUST only execute at the next available pedagogical break point.",
+            "trigger_condition": "IF current token count is detected to be > additional_context.constraints_and_strategy.system_constraints.state_update_token_threshold THEN set internal flag CONTEXT_SAVE_REQUIRED=TRUE."
           }
         },
         "rules": {
@@ -379,10 +367,27 @@
     "additional_context": {
       "_notes": "This is the initial context block. Updated only when `json_update_protocol` triggers are activated.",
 
-      "user_state_management": {
+      "user_profile": {
         "user_language": "user preferred language",
         "initial_assessment": "user starting level assessed by meta_prompt_assistant",
+        "professional_skills": ["relevant skills"],
         "environment_state": "<initial setup>"
+      },
+
+      "constraints_and_strategy": {
+        "hardware_limits": "<user hardware constraints>",
+        "software_stack": "<relevant software>",
+        "efficiency_principles": "Focus on algorithms working within constraints",
+        "study_constraints": {
+          "user_time_input": "<Raw time input from question_8>",
+          "pacing_choice": "<DEPTH-FIRST or TIME-BOXED>"
+        },
+        "system_constraints": {
+          "context_window_model": "Large LLM (256k+)",
+          "state_update_token_threshold": 200000,
+          "pacing_choice": "<DEPTH-FIRST or TIME-BOXED>"
+        },
+        "pacing_policy": "IF 'pacing_choice' is DEPTH-FIRST, then: Depth over speed, progression is gated solely by verified conceptual mastery. Use 'user_time_input' to determine session length and plan steps. IF 'pacing_choice' is TIME-BOXED, then: Time is the primary gate. Content depth/validation is secondary to meeting the deadline."
       },
 
       "mentor_failure_log": {
@@ -419,7 +424,8 @@
             },
             "Duration, topics covered, validation success rates"
           ],
-          "current_focus": "initial topic the meta_prompt_assistant have chosen"
+          "current_focus": "topic the user is learning now",
+          "next_focus": "initial topic the meta_prompt_assistant have chosen"
         },
 
         "learning_style_observed": {
