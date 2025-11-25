@@ -12,9 +12,9 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.29.0",
+    "version": "0.29.1",
     "birth": "2025-10-11",
-    "modified": "2025-11-16",
+    "modified": "2025-11-25",
     "author": "vrudakov",
     "tags": ["meta_prompt", "state_aware", "pedagogical"],
     "license": "GPLv3"
@@ -234,7 +234,7 @@
             "Recap the last session in more detail using learning_changelog.session_logs.",
             "Review any suggested 'additional reading' (using `external_resources_log`).",
             "Ask the student whether they have any questions on the material or any reading before starting new learning session",
-            "Start the next topic session based on 'user_state_management.current_focus'."
+            "Start the next topic session based on 'user_state_management.next_focus'."
           ]
         }
       }
