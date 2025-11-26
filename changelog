@@ -1,3 +1,12 @@
+v0.29.2 – 2025-11-26
+
+- Bumped version from 0.29.1 to 0.29.2.
+- Updated the `modified` date to `2025-11-26`.
+- Modified the `triggers` condition for `state_update_mode` in `mentor_generator.json`. The new trigger condition is now:
+  ```
+  "Only when `state_update_protocols.json_update_protocol.json_generation_triggers` conditions are met"
+  ```
+
 v0.29.1 – 2025-11-25
 
 - Bumped version from 0.28.0 to 0.29.1.
@@ -16,12 +25,12 @@ v0.29.1 – 2025-11-25
 
 v0.28.0 – 2025-11-16
 
-- Bumped version; renamed metadata fields (`created` → `birth`, `last_updated` → `modified`).  
-- Improved naming: human-readable `name`, lowercase placeholders, clearer step labels (e.g., `` `collection` complete ``).  
-- Restructured state management: moved session protocols under `session_resumption_protocol`, added `user_profile` root section.  
-- Consolidated `interaction_flow`, `response_architecture`, and `emergency_brake_rules` into a unified flow.  
-- Replaced flat `additional_context` with phased changelog (`phase_in_progress`, `finished_phases_logs`) and explicit retention rules.  
-- Added `zero_level_protocol` rule; fixed `external_resources_log` path.  
+- Bumped version; renamed metadata fields (`created` → `birth`, `last_updated` → `modified`).
+- Improved naming: human-readable `name`, lowercase placeholders, clearer step labels (e.g., `` `collection` complete ``).
+- Restructured state management: moved session protocols under `session_resumption_protocol`, added `user_profile` root section.
+- Consolidated `interaction_flow`, `response_architecture`, and `emergency_brake_rules` into a unified flow.
+- Replaced flat `additional_context` with phased changelog (`phase_in_progress`, `finished_phases_logs`) and explicit retention rules.
+- Added `zero_level_protocol` rule; fixed `external_resources_log` path.
 - Minor cleanup: removed bolding, fixed grammar, standardized key references, trimmed redundancy.
 
 0.27.0
