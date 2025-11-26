@@ -12,9 +12,9 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.29.1",
+    "version": "0.29.2",
     "birth": "2025-10-11",
-    "modified": "2025-11-25",
+    "modified": "2025-11-26",
     "author": "vrudakov",
     "tags": ["meta_prompt", "state_aware", "pedagogical"],
     "license": "GPLv3"
@@ -249,7 +249,7 @@
         },
         "state_update_mode": {
           "focus": "Administrative progress updates",
-          "triggers": "Only when `additional_context_protocol` conditions are met",
+          "triggers": "Only when `state_update_protocols.json_update_protocol.json_generation_triggers` conditions are met",
           "structure": "Validate → Announcement → Update → Delimiter → JSON block",
           "transparency": "Explicit mode transition messaging"
         }
