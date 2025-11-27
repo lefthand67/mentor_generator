@@ -1,3 +1,17 @@
+v0.30.0 – 2025-11-28
+
+- Bumped version from 0.29.2 to 0.30.0.
+- Updated the `modified` date to `2025-11-28`.
+- Changed the license from "GPLv3" to "MIT".
+- Modified the `session_resumption_protocol`:
+  - Added a new `session_control` object with an initial state of `initial_session_protocol_completed: false`.
+  - Updated the `_notes` for both `first_session_protocol` and `subsequent_session_protocol` to reflect the use of `session_control.initial_session_protocol_completed`.
+- Updated the `content_requirements` rule in `json_update_protocol`:
+  - Changed from updating only changed fields plus required metadata to always outputting the complete, updated JSON block.
+- Removed the `context_window_model` and `pacing_choice` fields from `system_constraints`.
+- Added new fields to `phase_in_progress`: `current_focus` and `next_focus`.
+- Cleaned up some minor formatting issues for consistency.
+
 v0.29.2 – 2025-11-26
 
 - Bumped version from 0.29.1 to 0.29.2.
