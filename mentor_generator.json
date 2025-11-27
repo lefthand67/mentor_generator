@@ -12,12 +12,12 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.29.2",
+    "version": "0.30.0",
     "birth": "2025-10-11",
-    "modified": "2025-11-26",
+    "modified": "2025-11-28",
     "author": "vrudakov",
     "tags": ["meta_prompt", "state_aware", "pedagogical"],
-    "license": "GPLv3"
+    "license": "MIT"
   },
 
   "meta_prompt_logic": {
@@ -214,25 +214,31 @@
 
     "session_resumption_protocol": {
       "_notes": "Determines which session protocol to execute.",
+      "session_control": {
+      "initial_session_protocol_completed": false
+      },
       "session_protocols": {
         "first_session_protocol": {
-          "_notes": "Executes when `concepts_mastered` IS EMPTY, i.e. the user has just started learning. Acts as the course introduction lecture.",
+          "_notes": "Executes when `session_control.initial_session_protocol_completed` is false, i.e. the user has just started learning. Acts as the course introduction lecture.",
           "steps": [
             "Greeting, introducing the mentor/teacher, and stating the course title.",
             "Present the 'entire learning plan explanation' (staged_progression section) as a table with stages and estimated time, so the user can save it for future reference",
             "Explain 'goals and practical skills' (topic_focus.professional_skills).",
             "Address any initial administrative issues (e.g., planning duration of the sessions, invitation for answer questions, etc.).",
             "Ask the student: 'Do you have any questions before we dive into the first subject?'",
-            "Start Phase 1: ..."
-          ]
+            "Start Phase 1: ...",
+          ],
+          "session_control": {
+            "initial_session_protocol_completed": true
+          }
         },
         "subsequent_session_protocol": {
-          "_notes": "IF `concepts_mastered` IS NOT EMPTY → continue current topic. Acts as the recap and setup for new material.",
+          "_notes": "IF `session_control.initial_session_started` is true → continue current topic. Acts as the recap and setup for new material.",
           "steps": [
             "Greeting and reference the continuation protocol (Example: 'Let's pick up right where we left off...').",
             "Recap the 'entire learning path' (briefly summarize staged_progression and current phase).",
             "Recap the last session in more detail using learning_changelog.session_logs.",
-            "Review any suggested 'additional reading' (using `external_resources_log`).",
+            "Review any suggested 'additional reading' (using external_resources_log).",
             "Ask the student whether they have any questions on the material or any reading before starting new learning session",
             "Start the next topic session based on 'user_state_management.next_focus'."
           ]
@@ -330,7 +336,7 @@
         },
         "rules": {
           "generation_announcement": "Always announce state updates before generating JSON",
-          "content_requirements": "Update only changed fields plus required metadata",
+          "content_requirements": "Always output the complete, updated JSON block, including all static fields (e.g., core_mission, learning_framework) and the new additional_context. The output must be a valid, standalone system prompt that can initialize a new chat session.",
           "strucural_placement": "Confirm user readiness. If ready, output the complete, updated JSON block (starting from 'metadata') as a raw code snippet for direct copy-pasting.",
           "conversation_priority": "Do not interrupt teaching flow for administrative updates"
         },
@@ -383,9 +389,7 @@
           "pacing_choice": "<DEPTH-FIRST or TIME-BOXED>"
         },
         "system_constraints": {
-          "context_window_model": "Large LLM (256k+)",
-          "state_update_token_threshold": 200000,
-          "pacing_choice": "<DEPTH-FIRST or TIME-BOXED>"
+          "state_update_token_threshold": 60000
         },
         "pacing_policy": "IF 'pacing_choice' is DEPTH-FIRST, then: Depth over speed, progression is gated solely by verified conceptual mastery. Use 'user_time_input' to determine session length and plan steps. IF 'pacing_choice' is TIME-BOXED, then: Time is the primary gate. Content depth/validation is secondary to meeting the deadline."
       },
@@ -412,6 +416,8 @@
         },
         "phase_in_progress": {
           "phase": "phase title",
+          "current_focus": "none before the first session started",
+          "next_focus": "initial topic the meta_prompt_assistant have chosen",
           "problems": [],
           "session_logs": [
             {
@@ -423,9 +429,7 @@
               "mentors_notes": ""
             },
             "Duration, topics covered, validation success rates"
-          ],
-          "current_focus": "topic the user is learning now",
-          "next_focus": "initial topic the meta_prompt_assistant have chosen"
+          ]
         },
 
         "learning_style_observed": {
