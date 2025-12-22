@@ -12,9 +12,9 @@
 
   "metadata": {
     "_notes": "list_unordered",
-    "version": "0.29.2",
+    "version": "0.30.0",
     "birth": "2025-10-11",
-    "modified": "2025-11-26",
+    "modified": "2025-12-23",
     "author": "vrudakov",
     "tags": ["meta_prompt", "state_aware", "pedagogical"],
     "license": "GPLv3"
@@ -345,11 +345,8 @@
       },
 
       "additional_context_protocol": {
+        "_notes": "These fields are instructions, do not rewrite them",
         "learning_changelog_management": {
-          "retention_policy": {
-            "phases_logs_retention_policy": "When the Phase is completed, summarize all `session_logs` in `phases_logs`. Start new phase in the clean `phase_in_progress`",
-            "session_logs_retention_policy": "Session logs should be updated after each session completed or user's JSON update request ONLY for the CURRENT SESSION. This block should contain ALL sessions of the CURRENT Phase."
-          },
           "compression_rules": [
             "summarize entire learning history into `summary_digest`",
             "merge consecutive minor updates",
@@ -402,52 +399,43 @@
       },
 
       "learning_changelog": {
-        "summary_digest": "",
-        "finished_phases_logs": {
-          "_notes": "compressed summary from the Phases session logs",
-          "Phase": {
-            "concepts_mastered": ["Array of validated concepts"],
-            "key_insights": []
-          }
-        },
-        "phase_in_progress": {
-          "phase": "phase title",
-          "problems": [],
-          "session_logs": [
-            {
+        "concepts_mastered": ["Array of validated concepts"],
+        "phases": {
+          "phase_title": {
+            "problems": [],
+            "session_logs": {
               "session": 0,
               "session_title": "",
               "concepts_covered": [],
               "implementation_progress": [],
               "key_insights": [],
               "mentors_notes": ""
-            },
-            "Duration, topics covered, validation success rates"
-          ],
-          "current_focus": "topic the user is learning now",
-          "next_focus": "initial topic the meta_prompt_assistant have chosen"
-        },
-
-        "learning_style_observed": {
-          "_notes": "list_unordered. DO NOT overwrite older observations if they were not proved as obsolete or wrong. Summarize whenever possible to compress data",
-          "style_list": [""]
-        },
-
-        "external_resources_log": {
-          "_notes": "Logs suggested external resources (books, videos, articles) after milestone achievement, for solidifying knowledge. The list MUST NOT BE OVERWRITTEN ever, ONLY appended",
-          "resources_suggested": [
-            {
-              "topic": "",
-              "resources": [
-                {
-                  "title": "",
-                  "type": "",
-                  "link": "if available"
-                }
-              ]
             }
-          ]
-        }
+          }
+        },
+        "current_focus": "topic the user is learning now",
+        "next_focus": "initial topic the meta_prompt_assistant have chosen"
+      },
+
+      "learning_style_observed": {
+        "_notes": "list_unordered. DO NOT overwrite older observations if they were not proved as obsolete or wrong. Summarize whenever possible to compress data",
+        "style_list": [""]
+      },
+
+      "external_resources_log": {
+        "_notes": "Logs suggested external resources (books, videos, articles) after milestone achievement, for solidifying knowledge. The list MUST NOT BE OVERWRITTEN ever, ONLY appended",
+        "resources_suggested": [
+          {
+            "topic": "",
+            "resources": [
+              {
+                "title": "",
+                "type": "",
+                "link": "if available"
+              }
+            ]
+          }
+        ]
       }
     }
   }
