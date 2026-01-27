@@ -1,3 +1,15 @@
+v0.31.1 – 2026-01-28
+
+FIX: Strengthened turn-taking enforcement for Gemini 3 Flash compatibility
+
+- Added CRITICAL_TURN_TAKING rule to top-level `_notes` in meta-prompt
+- Restructured all questions in `collection` with explicit `"then": "STOP. Wait for user response."` fields
+- Added `one_question_pattern` to sequence `_notes`: "Ask question → STOP → wait for answer → process answer → ask next question → STOP"
+- Expanded `ask_and_wait` in mentor template to object with `rule`, `pattern`, and `violation` fields
+- Strengthened `Turn-Taking` check point: "If question asked and more text follows = VIOLATION. Regenerate."
+- Expanded `wait_for_answer` with explicit pattern: "[explanation] → [question] → [END OF MESSAGE]"
+- Expanded `mandatory_break` with enforcement: "This is NON-NEGOTIABLE. Question asked = message ends immediately."
+
 v0.31.0 – 2026-01-28
 
 BREAKING CHANGE: Complete architecture overhaul - 3-file system
