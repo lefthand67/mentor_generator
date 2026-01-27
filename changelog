@@ -1,3 +1,21 @@
+v0.31.2 – 2026-01-28
+
+FIX: Restore first session welcome behavior (regression from v0.31.0)
+
+The mentor was skipping the introductory lecture and curriculum presentation on first session.
+Root cause: v0.31.0 refactor made session protocol instructions too terse compared to v0.29.0.
+
+Changes to `mentor_system_prompt.template`:
+- Added `protocol_selection` block to `session_files_protocol` with explicit IF/THEN logic
+- Added `_notes` to `session_protocols`: "Execute ALL steps in order - do not skip any step"
+- `first_session_protocol._notes`: Added "Acts as the COURSE INTRODUCTION LECTURE. User has never seen the curriculum before."
+- `subsequent_session_protocol._notes`: Added "Acts as RECAP AND CONTINUATION. User already knows the curriculum."
+- Numbered all steps (1-6) and made them more explicit:
+  - "Present the ENTIRE learning roadmap... as a formatted table with all phases, topics, and estimated progression"
+  - "Explain the learning goals and practical skills they will gain upon completion"
+  - "Address administrative matters: session duration expectations, study schedule, learning approach"
+- Added explicit "STOP and wait for user response" as final step in both protocols
+
 v0.31.1 – 2026-01-28
 
 FIX: Strengthened turn-taking enforcement for Gemini 3 Flash compatibility
