@@ -1,93 +1,125 @@
-# 🚀 Step-by-Step User Guide
+# Mentor Generator
 
-Mentor generator is your personal AI mentor, which creates a customized training program just for you. Unlike static courses, the mentor generator adapts to your language, knowledge level, goals, and even technical constraints.
+Mentor Generator creates a personalized AI learning mentor tailored to your language, knowledge level, goals, and constraints.
 
-In just 5 minutes of conversation, it generates a unique configuration file—a digital “core” of your personal mentor, which will accompany you throughout your educational journey, keep track of your progress, and evolve together with you.
+In a 5-minute conversation, it generates two configuration files that define your personal mentor. These files accompany you throughout your learning journey, tracking progress across sessions.
 
-Start — and your ideal mentor will be created.
+> **Important notes:**
+> 1. AI models can hallucinate. The prompts contain many checks, but there is no 100% guarantee.
+> 2. Don't drag sessions out - change chats often to avoid context degradation.
+> 3. This is an experiment, not a production-ready solution.
 
-> Warning:
-> 1. AI models can hallucinate (just like any person). The prompt contains many checks and cross-checks, but there is no 100% guarantee against hallucinations.
-> 2. The huge prompt size allows for a maximum set of model rules, but may also confuse it. Don’t drag sessions out, change chats more often, and be prepared for possible mentor malfunctions.
-> 3. Remember this is an experiment, not a solution ready for industrial deployment.
+## Quick Start
 
-## Step 1: Getting the JSON File
+1. Copy the contents of `mentor_generator.json`
+2. Paste into a powerful AI chat (Gemini 2.5 Pro, DeepSeek, Claude Opus 4.5)
+3. Answer 9 questions about your learning goals
+4. Receive two files: `mentor_system_prompt` and `course_config`
+5. Start learning sessions by attaching these files to new chats
 
-Copy the contents of the `mentor_generator.json` file and paste it into the chat window of any powerful model.
+> **Model recommendations:** Gemini 2.5 Pro and DeepSeek start working immediately. ChatGPT often reads the file verbatim and asks what to do - not recommended.
 
-> Attention! This monolithic and extremely large prompt must only be loaded into very powerful models. Local models will quickly lose context.
-> ChatGPT5 usually reads the file verbatim and starts asking you what you want it to do. On the other hand, models like Gemini 2.5 Pro, Deepseek start working immediately, so we recommend using them.
+## The 3-File System
 
-## Step 2: Understanding Dialogue Principles
+### Generated Files (You Create Once)
 
-The dialogue scenario is pre-written in the prompt itself. The AI will ask you questions one by one, guiding you through the steps described below.
+| File | Purpose | When to Modify |
+|------|---------|----------------|
+| `mentor_system_prompt` | Mentor personality, teaching rules, behavior | Never |
+| `course_config` | Your profile, constraints, curriculum | Rarely (only if constraints change) |
 
-1. The AI starts the session in Russian and introduces itself.
-2. Then it automatically switches to the language of your response.
-   * If you reply in English, it continues in English.
-   * If you reply in Spanish, it continues in Spanish, etc.
-3. It asks one question at a time; answer them in the same sequence. If you realize you forgot to say something, you can clearly state that in another reply (for example: "I forgot to mention…").
-4. After all questions, a “pedagogical validation” step is performed to ensure the mentor’s design matches your profile. You do not need to understand the details of the check; the step is required for the model’s self-control.
-5. After your confirmation, it generates a new JSON file—the system prompt for your personal learning mentor.
+### Session Files (Created During Learning)
 
-Afterwards, you will use this generated JSON as a system message in future sessions.
+| File | Purpose | When Created |
+|------|---------|--------------|
+| `session_1`, `session_2`, ... | Progress tracking, mastery records, notes | End of each learning session |
 
-## Step 3: How to Answer the Questions
+**Key principle:** Session files are never overwritten. Each session creates a new file.
 
-Answer with brief, clear sentences, but the more detail you give, the more personalized the result will be.
+## Learning Workflow
 
-💡 Tip: Don't be vague and don't jump between topics, so as not to confuse the AI. A bad answer is not in your interest.
+### Starting a Session
 
-| Prompt Question           | How to Answer                                                             |
-| ------------------------- | ------------------------------------------------------------------------- |
-| Language                  | “English”, “Русский”, or any supported language.                   |
-| Topic                     | “Python for Data Analysis”, “History of Byzantium”, etc..          |
-| Experience Level          | “Beginner in programming but strong in math.”.                     |
-| Learning Goals            | “Practice through examples and conceptual clarity.”.                |
-| Constraints               | “Only laptop, Windows 7, 4 GB RAM.”.                               |
-| Depth                     | “Medium tech level, focus on reasoning.”.                          |
-| Subtopics                 | “NumPy arrays, SQL JOIN operations, project structure.”.           |
-| Time Limits               | “1 hour per day, in the evenings.”.                                |
-| Mentor Tone/Role          | “Friendly but strict.”, “More experienced colleague.” You may name a specific real or fictional person. |
+1. Open a **new chat** with your AI
+2. Attach `mentor_system_prompt` and `course_config`
+3. Attach all previous session files (`session_1`, `session_2`, etc.)
+4. Say "Let's continue" or "Start session"
 
-The mentor uses these answers to create a structured JSON file with a system prompt.
+The mentor reads all files, synthesizes your history, and continues from where you left off.
 
-## Step 4: Saving and Reusing Your Personalized Prompt
+### Ending a Session
 
-When the AI displays the JSON block, copy it exactly as is, including brackets.
+1. Signal session end ("Let's stop here", "End session", or reach a natural conclusion)
+2. Mentor outputs a new `session_N` file
+3. Save this file to your course folder
+4. Next session, attach it along with previous sessions
 
-Save it. Afterwards, you can reuse it by pasting the saved JSON into any new chat.
+### Why New Chats?
 
-## Step 5: Continuing Sessions (Managing State)
+AI chats have context limits. Starting fresh with your files attached gives the mentor full context without old conversation clutter degrading quality.
 
-Your mentor prompt supports session continuity:
+## Answering the Questions
 
-* It tracks your progress via `additional_context`.
-* Upon restart, the AI reads `additional_context` and resumes where you stopped.
-* The JSON updates only on certain triggers (session end, milestone achievement, progress check).
+The meta-prompt asks 9 questions. Answer clearly and specifically - vague answers yield poor personalization.
 
-When the AI says “Updating your learning progress…”, it will display a new JSON block—copy and save it, replacing the previous one.
+| Question | How to Answer |
+|----------|---------------|
+| Language | "English", "Русский", or any language |
+| Topic | "Python for Data Analysis", "History of Byzantium" |
+| Experience Level | "Beginner in programming but strong in math" |
+| Learning Goals | "Practice through examples and conceptual clarity" |
+| Constraints | "Only laptop, Windows, 4 GB RAM" |
+| Depth | "Medium tech level, focus on reasoning" |
+| Subtopics | "NumPy arrays, SQL JOIN operations" |
+| Time/Strategy | "DEPTH-FIRST, 1 hour on 3 weekdays" or "TIME-BOXED, finish by March" |
+| Mentor Tone | "Friendly but strict", "Like Richard Feynman" |
 
-Wishing you an interesting and engaging learning experience!
+## Sharing Your Mentor
 
-***
+The separation of files enables sharing:
 
-## Real-World Example (For Deep Learning Engineers):
+- Share your `mentor_system_prompt` with others learning the same topic
+- Each person creates their own `course_config` with their profile
+- Same teaching style, personalized per user
 
-Suppose you want a customized mentor for “Deep Learning with PyTorch,” and your technical limitation is: “Only a Linux laptop, 8GB RAM.” You reply to each prompt as shown in the table above. The AI generates a JSON system prompt tailored to your exact context. This lets you resume your session after a break, and your learning program adapts as you progress. If a topic feels unclear (e.g., “backpropagation math”), you clarify it in the next answer—the mentor evolves with your feedback.
+## File Format
 
-Projects examples:
+Files are shown in JSON, but the content can be converted to YAML, Markdown, or plain text. The structure matters, not the format.
+
+## Migration from v0.30.x
+
+If you have an existing monolithic JSON from previous versions:
+
+1. **Recommended:** Start fresh with the new system
+2. **Manual migration:** Extract relevant sections into the new file structure
+3. Your learning progress from old sessions cannot be automatically migrated
+
+## Folder Structure
+
+```
+my_course/
+├── mentor_system_prompt     # Attach every session
+├── course_config            # Attach every session
+└── sessions/
+    ├── session_1            # Attach to session 2+
+    ├── session_2            # Attach to session 3+
+    └── ...
+```
+
+## Example Projects
+
+Real courses created with Mentor Generator:
 
 1. [llm_from_scratch_practice](https://github.com/lefthand67/llm_from_scratch_practice)
-1. [python_threading_for_ai_course](https://github.com/lefthand67/python_threading_for_ai_course)
+2. [python_threading_for_ai_course](https://github.com/lefthand67/python_threading_for_ai_course)
 
-## Pitfalls and Peer Review
+## Pitfalls
 
-- Overly large prompts can crash or confuse weaker models: always use top-tier, current AI models for these workflows.
-- Vague answers yield poor personalization; always be specific in your responses.
-- Expect occasional model hallucinations: cross-check all mentor advice with trusted sources or your own expertise.
-- Treat this as an experimental workflow, not a production-ready solution.
+- **Weak models:** Always use top-tier AI models - weak models lose context quickly
+- **Vague answers:** Be specific in your responses during setup
+- **Hallucinations:** Cross-check mentor advice with trusted sources
+- **Long sessions:** Change chats often to maintain quality
 
-For professional use, always review each stage of mentor generation and verify the final JSON configuration against your learning goals and constraints. This ensures the system prompt is reliable and safe for serious learning.
+## Questions?
 
-If you have further questions on best practices, configuration pitfalls, or want peer review of your setup, please provide your JSON block and scenario for feedback.
+If you have questions or want feedback on your setup, open an issue with your configuration files and scenario.

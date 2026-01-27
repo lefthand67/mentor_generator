@@ -1,3 +1,27 @@
+v0.31.0 – 2026-01-28
+
+BREAKING CHANGE: Complete architecture overhaul - 3-file system
+
+- Separated meta-prompt from mentor template into distinct files
+- New file structure:
+  - `mentor_generator.json` - Meta-prompt only (questionnaire logic)
+  - `templates/mentor_system_prompt.template` - Mentor behavior rules
+  - `templates/course_config.template` - User profile and curriculum
+- Meta-prompt now generates TWO output files instead of one monolithic JSON
+- Session files: Each learning session creates immutable `session_N` file
+- Removed complex state management:
+  - Removed `additional_context` block from mentor
+  - Removed `context_limit_approaching` trigger
+  - Removed `CONTEXT_SAVE_REQUIRED` flag
+  - Removed dual-mode complexity (teaching vs state update)
+- Added `session_files_protocol` - how mentor reads attached files
+- Added `session_output_protocol` - exact template for session output
+- Hardcoded user instructions in `guidance_for_user.message_paragraphs`
+- Format-agnostic design: JSON, YAML, Markdown, or plain text all valid
+- Mentor templates now reusable across different users
+- Updated README.md with new workflow
+- Updated CLAUDE.md with new architecture
+
 v0.30.0 – 2025-11-28
 
 - Bumped version from 0.29.2 to 0.30.0.

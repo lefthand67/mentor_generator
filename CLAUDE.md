@@ -4,30 +4,77 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Mentor Generator is a **meta-prompt engineering project** that creates personalized AI learning mentors. The core artifact is `mentor_generator.json` - a sophisticated prompt that guides an LLM through an interactive questionnaire to generate customized learning system prompts.
+Mentor Generator is a **meta-prompt engineering project** that creates personalized AI learning mentors. The system generates two configuration files that define a customized learning experience.
 
-This is **not a traditional software project** - there is no build system, no package manager, no automated tests. The JSON file itself is the product.
+This is **not a traditional software project** - there is no build system, no package manager, no automated tests. The JSON/template files are the product.
 
 ## Architecture
 
-### Core File: `mentor_generator.json`
+### File Structure
 
-The JSON contains these key sections:
+```
+mentor_generator/
+├── mentor_generator.json              # Meta-prompt (questionnaire only)
+├── templates/
+│   ├── mentor_system_prompt.template  # Template for mentor behavior rules
+│   └── course_config.template         # Template for user profile/curriculum
+├── README.md
+├── CLAUDE.md
+└── changelog
+```
 
-- **meta_prompt_logic** - Instructions for the AI to conduct the 9-question interactive collection process
-- **mentor_system_prompt_template** - Template for the generated personalized mentor prompt
-- **validation** - Pedagogical self-validation checks (factual integrity, persona consistency, progression gates)
-- **interaction_flow** - Two modes: Teaching Mode (primary) and State Update Mode (administrative)
-- **learning_framework** - Rules for mastery-gated progression, turn-taking, emergency brake protocols
-- **state_update_protocols** - JSON regeneration triggers and session continuity
+### Generated Output (Per User)
+
+```
+user_course/
+├── mentor_system_prompt    # Static mentor rules (attach every session)
+├── course_config           # User profile + curriculum (attach every session)
+└── sessions/
+    ├── session_1           # Immutable session records
+    ├── session_2
+    └── ...
+```
+
+### Core Files
+
+#### `mentor_generator.json` (Meta-Prompt)
+
+Contains ONLY the questionnaire logic:
+- **meta_prompt_logic** - Instructions for conducting 9-question collection
+- **interactive_input_sequence** - The questions and flow control
+- **validation** - Pedagogical validation checks
+- **persona_mapping_protocol** - Translates persona preferences into instructions
+- **guidance_for_user** - Hardcoded user instructions (printed verbatim)
+- **file_generation_protocol** - How to fill and output templates
+- **template_references** - Points to template files
+
+#### `templates/mentor_system_prompt.template`
+
+Defines mentor behavior (filled once during generation):
+- **mentor_profile** - Persona, tone, teaching style
+- **mentor_self_control** - Self-correction, peer review checks
+- **session_files_protocol** - How to read attached files
+- **session_protocols** - First session vs subsequent session behavior
+- **interaction_flow** - Turn-taking, emergency brakes
+- **learning_framework** - Mastery-gated progression rules
+- **session_output_protocol** - Exact template for session file output
+
+#### `templates/course_config.template`
+
+Defines user-specific data (filled once during generation):
+- **user_profile** - Language, assessment, skills, goals
+- **constraints_and_strategy** - Hardware, pacing choice
+- **curriculum** - Phased learning progression
+- **mentor_failure_log** - Error tracking for self-correction
 
 ### Key Design Patterns
 
-1. **Dual Interaction Modes**: Teaching mode for learning, state update mode for progress tracking
-2. **Mastery-Gated Progression**: Students cannot advance without demonstrating understanding
-3. **Session Continuity**: `additional_context` field preserves learning state across sessions
-4. **Persona Mapping Protocol**: Translates user persona preferences (e.g., "Ringo Starr") into actionable instructions
-5. **Pre-Response Peer Review**: Built-in validation before generating answers
+1. **Separation of Concerns**: Meta-prompt and mentor are different roles in different files
+2. **Template-First Output**: Mentor fills exact templates, never "decides" what to include
+3. **Immutable Session History**: Each session creates a new file, old files never modified
+4. **Predictability Through Constraints**: Output format is constrained, not instructed
+5. **Reusable Mentor Templates**: Same mentor_system_prompt works for multiple users
+6. **Format-Agnostic**: JSON shown, but YAML/Markdown/text equally valid
 
 ### Learning Strategies
 
@@ -36,13 +83,21 @@ The JSON contains these key sections:
 
 ## Usage Workflow
 
-1. Copy entire `mentor_generator.json` content
-2. Paste into chat with powerful LLM (Gemini 2.5 Pro, DeepSeek, Claude Opus 4.5)
-3. Answer 9 interactive questions (language, topic, level, goals, constraints, depth, subtopics, strategy, tone)
-4. AI performs pedagogical validation
-5. AI generates personalized JSON mentor prompt
-6. Use generated JSON in future learning sessions
-7. When mentor announces state update, save new JSON and continue in fresh chat
+### Creating a Mentor (Meta-Prompt Phase)
+
+1. Copy `mentor_generator.json` content
+2. Paste into powerful LLM chat
+3. Answer 9 questions
+4. AI validates and outputs TWO files
+5. Save both files to course folder
+
+### Learning Sessions
+
+1. Open new chat, attach `mentor_system_prompt` + `course_config` + all `session_N` files
+2. Say "Let's continue"
+3. Learn with mastery-gated progression
+4. At session end, mentor outputs `session_N` file
+5. Save new session file, repeat
 
 ## Recommended Models
 
@@ -51,18 +106,19 @@ The JSON contains these key sections:
 - Claude Opus 4.5
 - NOT ChatGPT-5 (reads verbatim and asks what to do)
 
-## JSON Structure Conventions
+## JSON/Template Conventions
 
-- `_notes` fields contain human instructions for AI and should never be overwritten
-- `prompt` section contains AI mentor instructions not shown to users
+- `_notes` and `_template_notes` fields contain instructions for AI, never overwritten
+- Placeholders marked with `<...>` are filled during generation
 - Top-level fields are human-readable and machine-usable
 - Version tracked in `metadata.version`
 
 ## When Editing
 
 - Preserve all `_notes` fields exactly as-is
-- Maintain JSON validity (the file must parse correctly)
+- Maintain JSON validity (files must parse correctly)
 - Follow existing naming conventions (snake_case for keys)
-- Version bumps go in `metadata.version` and `metadata.modified`
-- Update `changelog` file for significant changes
+- Version bumps: `metadata.version` and `metadata.modified`
+- Update `changelog` for significant changes
 - Update `RELEASE_NOTES.md` for releases
+- Keep `guidance_for_user.message_paragraphs` as exact text to print
