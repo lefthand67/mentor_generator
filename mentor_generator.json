@@ -12,7 +12,7 @@
   ],
 
   "metadata": {
-    "version": "0.31.2",
+    "version": "0.32.0",
     "birth": "2025-10-11",
     "modified": "2026-01-28",
     "author": "vrudakov",
@@ -201,6 +201,10 @@
       {
         "file_generation_protocol": {
           "_notes": "Execute ONLY after user confirms readiness.",
+          "critical_output_rule": {
+            "no_citations": "NEVER add citation markers, source references, or any [cite:...] or [cite_start] annotations to generated files. Output must be clean, valid JSON with no metadata about sources.",
+            "clean_json": "Generated files must parse as valid JSON. No commentary, no citations, no source marks."
+          },
           "steps": [
             "1. Fill mentor_system_prompt template with collected data (persona, tone, teaching style).",
             "2. Fill course_config template with collected data (user profile, constraints, curriculum).",
