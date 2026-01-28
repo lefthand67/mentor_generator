@@ -1,3 +1,19 @@
+v0.34.1 – 2026-01-29
+
+FIX: Complete user workflow instructions and include session_template in output
+
+Problem: Users were told to attach session_template but the meta-prompt never provided it.
+The workflow instructions were also too brief, causing confusion for new users.
+
+Changes to `mentor_generator.json`:
+- Meta-prompt now outputs THREE files: mentor_system_prompt, user_profile, session_template
+- session_template is output verbatim (no modifications needed)
+- Split workflow into "FIRST session" and "SUBSEQUENT sessions" with detailed steps
+- Added "Editing Your user_profile" section with reassuring guidance for non-technical users
+- Updated all references from "two files" to "three files"
+- Updated `file_generation_protocol` steps to include session_template
+- Updated `template_references.session_template` to clarify two-stage process
+
 v0.34.0 – 2026-01-28
 
 REFACTOR: 3-template architecture with proper data separation
