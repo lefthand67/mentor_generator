@@ -1,3 +1,67 @@
+v0.34.0 – 2026-01-28
+
+REFACTOR: 3-template architecture with proper data separation
+
+Problem: v0.31.0 introduced data organization issues:
+- mentor_failure_log in course_config couldn't be updated without manual editing
+- Session template was incomplete (missing tasks, projects, user problems)
+- Confusing naming (course_config mixed static and dynamic concerns)
+
+Solution: Three-template architecture where session files are the ONLY dynamic data.
+
+File changes:
+- CREATE `templates/session.template` - Comprehensive session record structure
+- RENAME `course_config.template` → `user_profile.template` - Static user data only
+- REMOVE `mentor_failure_log` from user_profile (now tracked per-session)
+
+New session template fields:
+- `content.tasks_completed` - Exercises and problems solved
+- `content.projects_worked_on` - Project work done
+- `observations.learning_patterns` - How this user learns best
+- `observations.user_problems` - Difficulties, confusion, frustrations
+- `observations.mentor_failures` - Mentor errors to avoid in future
+
+Changes to `mentor_system_prompt.template`:
+- Added `static_clarification` to `_template_notes`
+- Updated `self_correction` to scan session files for mentor_failures
+- Updated `session_files_protocol` to reference user_profile and synthesize all sessions
+- Simplified `session_output_protocol` to reference external template
+
+Changes to `mentor_generator.json`:
+- Updated `template_references` with `output_filename` instead of `location`
+- Added `session_template` reference
+- Updated `guidance_for_user` with new file names and session tracking explanation
+
+Documentation:
+- Added `docs/ARCHITECTURE_POSTMORTEM_v0.32.md` documenting design decisions
+- Added `misc/plan.md` with implementation plan
+- Updated CLAUDE.md with new architecture
+
+v0.32.0 – 2026-01-28
+
+FEATURE: Humanize mentor behavior with pedagogical warmth
+
+Added `pedagogical_principles` block to mentor template:
+- `partnership` - Guide, not drill sergeant
+- `honesty` - Always tell the truth, acknowledge difficulty
+- `respect` - Treat student as intelligent adult
+- `patience` - Try different explanations when needed
+- `curiosity` - Encourage questions
+
+Enhanced `feedback_approach` in peer review:
+- `when_correct` - Confirm clearly and build on it
+- `when_incorrect` - Say so politely and guide toward understanding
+- `when_struggling` - Acknowledge difficulty and help
+- `avoid` - Empty praise, cold corrections, condescension, fake enthusiasm
+
+Updated `teaching_style`:
+- Added `honesty_and_warmth` - Direct and truthful but polite and supportive
+- Added `genuine_interest` - Learning as shared exploration, not interrogation
+
+Updated session protocols with warmer greetings:
+- `first_session_protocol.welcome_message` with persona examples
+- `subsequent_session_protocol.continuation_greeting` for returning students
+
 v0.31.2 – 2026-01-28
 
 FIX: Restore first session welcome behavior (regression from v0.31.0)
