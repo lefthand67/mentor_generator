@@ -17,7 +17,8 @@ mentor_generator/
 ├── mentor_generator.json              # Meta-prompt (questionnaire only)
 ├── templates/
 │   ├── mentor_system_prompt.template  # Template for mentor behavior rules
-│   └── course_config.template         # Template for user profile/curriculum
+│   ├── user_profile.template          # Template for user profile/curriculum
+│   └── session.template               # Template for session records
 ├── README.md
 ├── CLAUDE.md
 └── changelog
@@ -28,7 +29,7 @@ mentor_generator/
 ```
 user_course/
 ├── mentor_system_prompt    # Static mentor rules (attach every session)
-├── course_config           # User profile + curriculum (attach every session)
+├── user_profile            # User profile + curriculum (attach every session)
 └── sessions/
     ├── session_1           # Immutable session records
     ├── session_2
@@ -59,13 +60,21 @@ Defines mentor behavior (filled once during generation):
 - **learning_framework** - Mastery-gated progression rules
 - **session_output_protocol** - Exact template for session file output
 
-#### `templates/course_config.template`
+#### `templates/user_profile.template`
 
-Defines user-specific data (filled once during generation):
+Defines user-specific data (filled once during generation, can be updated by user):
 - **user_profile** - Language, assessment, skills, goals
 - **constraints_and_strategy** - Hardware, pacing choice
 - **curriculum** - Phased learning progression
-- **mentor_failure_log** - Error tracking for self-correction
+
+#### `templates/session.template`
+
+Defines session record structure (mentor fills at end of each session):
+- **position** - Current phase, topic covered, next topic, progress
+- **content** - Summary, tasks completed, projects, resources suggested
+- **mastery** - Concepts validated/struggling, validation method
+- **observations** - Learning patterns, user problems, mentor failures
+- **mentor_notes** - Notes for future sessions
 
 ### Key Design Patterns
 
@@ -93,7 +102,7 @@ Defines user-specific data (filled once during generation):
 
 ### Learning Sessions
 
-1. Open new chat, attach `mentor_system_prompt` + `course_config` + all `session_N` files
+1. Open new chat, attach `mentor_system_prompt` + `user_profile` + all `session_N` files
 2. Say "Let's continue"
 3. Learn with mastery-gated progression
 4. At session end, mentor outputs `session_N` file

@@ -1,8 +1,8 @@
 {
   "_template_notes": {
-    "purpose": "User profile and curriculum template - fill placeholders marked with <...> during meta-prompt generation",
-    "usage": "This file contains user-specific data. Attach to every learning session along with mentor_system_prompt.",
-    "sharing": "The mentor_system_prompt can be shared across users; each user has their own course_config with their profile and progress.",
+    "purpose": "User profile and curriculum - fill during meta-prompt generation",
+    "usage": "User data. Attach to every session along with mentor_system_prompt. Can be updated if circumstances change (hardware, learning strategy, etc.).",
+    "sharing": "The mentor_system_prompt can be shared across users; each user has their own user_profile with their profile and curriculum.",
     "format": "JSON shown here, but content can be converted to YAML, Markdown, or plain text as needed"
   },
 
@@ -66,16 +66,5 @@
       }
     ],
     "subtopics_requested": ["<specific subtopics user wants covered>"]
-  },
-
-  "mentor_failure_log": {
-    "_notes": "Logs mentor errors for self-correction. Updated only on explicit user request when mentor makes a mistake.",
-    "log_entries": [
-      {
-        "error": "<description of error>",
-        "context": "<when/where it occurred>",
-        "lesson": "<what to avoid in future>"
-      }
-    ]
   }
 }
